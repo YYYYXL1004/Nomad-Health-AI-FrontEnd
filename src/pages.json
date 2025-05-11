@@ -1,0 +1,179 @@
+﻿{
+	"pages": [ 	
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "主页",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/consult/index",
+			"style": {
+				"navigationBarTitleText": "问诊",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/consult/detail",
+			"style": {
+				"navigationBarTitleText": "问诊详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/register/index",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/health-records",
+			"style": {
+				"navigationBarTitleText": "健康档案",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/consultations",
+			"style": {
+				"navigationBarTitleText": "问诊记录",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/prescriptions",
+			"style": {
+				"navigationBarTitleText": "处方管理",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/settings",
+			"style": {
+				"navigationBarTitleText": "设置",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/health-detail",
+			"style": {
+				"navigationBarTitleText": "健康数据详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/medical-history-detail",
+			"style": {
+				"navigationBarTitleText": "病史详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/allergy-detail",
+			"style": {
+				"navigationBarTitleText": "过敏详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/change-mobile",
+			"style": {
+				"navigationBarTitleText": "修改手机号",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/change-password",
+			"style": {
+				"navigationBarTitleText": "修改密码",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/edit-profile",
+			"style": {
+				"navigationBarTitleText": "编辑资料",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/health/report-detail",
+			"style": {
+				"navigationBarTitleText": "健康报告详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/articles/list",
+			"style": {
+				"navigationBarTitleText": "健康文章",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/articles/detail",
+			"style": {
+				"navigationBarTitleText": "文章详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/common/webview",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "敕勒云诊",
+		"navigationBarBackgroundColor": "#8ab6c8",
+		"backgroundColor": "#f5f5f5"
+	},
+	"tabBar": {
+		"color": "#999",
+		"selectedColor": "#8ab6c8",
+		"backgroundColor": "#ffffff",
+		"borderStyle": "black",
+		"fontSize": "24rpx",
+		"iconWidth": "30px",
+		"height": "60px",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "主页",
+				"iconPath": "static/icons/home.png",
+				"selectedIconPath": "static/icons/home_active.png"
+			},
+			{
+				"pagePath": "pages/consult/index",
+				"text": "问诊",
+				"iconPath": "static/icons/consult.png",
+				"selectedIconPath": "static/icons/consult_active.png"
+			},
+			{
+				"pagePath": "pages/my/index",
+				"text": "我的",
+				"iconPath": "static/icons/my.png",
+				"selectedIconPath": "static/icons/my_active.png"
+			}
+		]
+	}
+}

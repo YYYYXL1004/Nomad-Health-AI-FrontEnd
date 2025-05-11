@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .debug-panel {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .log-panel {
+            background-color: #f5f5f5;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .debug-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .debug-button.clear {
+            background-color: #f44336;
+        }
+        .debug-button.storage {
+            background-color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <h1>微信小程序调试页面</h1>
+    
+    <div class="debug-panel">
+        <h2>登录状态调试</h2>
+        <button class="debug-button" onclick="clearLoginState()">清除登录状态</button>
+        <button class="debug-button" onclick="setLoginState()">设置登录状态</button>
+        <button class="debug-button storage" onclick="showStorageData()">显示存储数据</button>
+        <button class="debug-button clear" onclick="clearLogs()">清除日志</button>
+    </div>
+    
+    <div class="log-panel" id="logOutput">
+        <p>准备就绪，点击按钮开始调试...</p>
+    </div>
+
+    <script>
+        // 模拟uni对象
+        window.uni = {
+            storage: {},
+            
+            setStorageSync: function(key, value) {
+                this.storage[key] = value;
+                log(`存储数据: ${key} = ${JSON.stringify(value)}`);
+            },
+            
+            getStorageSync: function(key) {
+                log(`读取数据: ${key} = ${JSON.stringify(this.storage[key] || null)}`);
+                return this.storage[key];
+            },
+            
+            removeStorageSync: function(key) {
+                delete this.storage[key];
+                log(`删除数据: ${key}`);
+            },
+            
+            showToast: function(options) {
+                log(`显示提示: ${options.title}`);
+            },
+            
+            reLaunch: function(options) {
+                log(`页面跳转: ${options.url}`);
+            }
+        };
+        
+        // 日志函数
+        function log(message) {
+            const logOutput = document.getElementById('logOutput');
+            const logEntry = document.createElement('p');
+            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logOutput.appendChild(logEntry);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+        
+        // 清除登录状态
+        function clearLoginState() {
+            uni.removeStorageSync('token');
+            uni.removeStorageSync('refreshToken');
+            uni.removeStorageSync('isLoggedIn');
+            uni.removeStorageSync('userInfo');
+            log('已清除登录状态');
+        }
+        
+        // 设置登录状态
+        function setLoginState() {
+            uni.setStorageSync('token', 'mock_token_12345');
+            uni.setStorageSync('refreshToken', 'mock_refresh_token_12345');
+            uni.setStorageSync('isLoggedIn', true);
+            uni.setStorageSync('userInfo', {
+                userId: 'user001',
+                username: '测试用户'
+            });
+            log('已设置登录状态');
+        }
+        
+        // 显示存储数据
+        function showStorageData() {
+            log('当前存储数据:');
+            for (const key in uni.storage) {
+                log(`${key}: ${JSON.stringify(uni.storage[key])}`);
+            }
+        }
+        
+        // 清除日志
+        function clearLogs() {
+            const logOutput = document.getElementById('logOutput');
+            logOutput.innerHTML = '<p>日志已清除...</p>';
+        }
+    </script>
+</body>
+</html> 
