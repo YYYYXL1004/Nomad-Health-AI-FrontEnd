@@ -29,75 +29,142 @@
 - 规范化代码风格
 - 优化用户界面交互体验
 
-## 快速开始
 
-### 环境要求
-- Node.js >= 16.0.0
-- HBuilderX >= 3.6.0
-- Android Studio (用于打包APK)
+## 零基础用户部署指南
 
-### 安装依赖
+本指南适合对前端开发不太熟悉的用户，帮助您从零开始部署和运行敕勒云诊前端项目。
+
+### 1. 环境安装
+
+首先，您需要安装以下基础软件：
+
+1. **安装Git**
+   - 访问 [Git官网](https://git-scm.com/downloads) 下载并安装适合您操作系统的版本
+   - 安装完成后，打开命令行（Windows用户打开PowerShell或命令提示符，Mac用户打开Terminal）
+   - 输入 `git --version` 确认安装成功
+
+2. **安装Node.js**
+   - 访问 [Node.js官网](https://nodejs.org/) 下载并安装LTS版本（长期支持版）
+   - 安装完成后，在命令行中输入 `node -v` 和 `npm -v` 确认安装成功
+
+3. **安装pnpm**（推荐的包管理器）
+   - 在命令行中运行：`npm install -g pnpm`
+   - 输入 `pnpm -v` 确认安装成功
+
+4. **安装HBuilderX**（用于运行和打包项目）
+   - 访问 [HBuilderX官网](https://www.dcloud.io/hbuilderx.html) 下载并安装App开发版
+   - 启动HBuilderX确认安装成功
+
+### 2. 获取项目代码
+
+1. **克隆GitHub仓库**
+   - 打开命令行，导航到您想存放项目的目录：`cd 您想要的目录路径`
+   - 运行以下命令克隆项目：
+   ```bash
+   git clone git@github.com:YYYYXL1004/Nomad-Health-AI-FrontEnd.git
+   ```
+   - 如果您使用HTTPS方式，可以使用：
+   ```bash
+   git clone https://github.com/YYYYXL1004/Nomad-Health-AI-FrontEnd.git
+   ```
+
+2. **进入项目目录**
+   ```bash
+   cd Nomad-Health-AI-FrontEnd
+   ```
+
+### 3. 安装项目依赖
+
+在项目目录中，运行以下命令安装所有依赖：
 ```bash
-# 推荐使用pnpm
 pnpm install
 ```
 
-### 开发
+### 4. 配置项目
+
+1. **配置环境变量**
+   - 在项目根目录找到 `.env.example` 文件（如果存在）
+   - 复制为 `.env.local` 文件，并按需修改配置
+   - 确保API地址设置正确
+
+2. **检查配置文件**
+   - 打开 `src/config/` 目录下的配置文件
+   - 根据您的实际环境调整相关配置
+
+### 5. 运行项目
+
+有两种方式可以运行项目：
+
+**方式一：使用命令行**
 ```bash
-# H5
+# 运行H5版本
 pnpm dev:h5
-
-# 微信小程序
-pnpm dev:mp-weixin
-
-# 支付宝小程序
-pnpm dev:mp-alipay
 ```
 
-### 构建
-```bash
-# H5
-pnpm build:h5
+**方式二：使用HBuilderX**
+1. 打开HBuilderX
+2. 选择"文件" > "导入" > "从本地目录导入"
+3. 选择您克隆的项目目录
+4. 项目导入后，点击运行按钮选择运行到浏览器或模拟器
 
+### 6. 构建与发布
+
+**构建H5版本**
+```bash
+pnpm build:h5
+```
+构建完成后，`dist/build/h5` 目录包含了可部署的文件。
+
+**构建小程序版本**
+```bash
 # 微信小程序
 pnpm build:mp-weixin
-
-# 支付宝小程序
-pnpm build:mp-alipay
 ```
 
-### 打包APK
-1. **环境准备**
-   - 安装 Android Studio
-   - 下载并配置 JDK（推荐版本 1.8 或 11）
-   - 配置 Android SDK 环境变量
+**发布APP**
+请参考上方的 "打包APK" 章节。
 
-2. **使用HBuilderX打包**
-   - 打开HBuilderX，点击菜单栏的「发行」
-   - 选择「原生App-云打包」
-   - 选择「Android」平台
-   - 配置证书信息（可使用HBuilder云端证书）
-   - 配置应用信息（应用名称、包名、版本号等）
-   - 点击「打包」按钮
+### 7. 部署到服务器
 
-3. **离线打包（高级）**
-   - 在HBuilderX中选择「发行」-「原生App-本地打包」
-   - 导出Android本地打包资源
-   - 使用Android Studio打开本地打包工程
-   - 修改相关配置（如图标、启动页、权限等）
-   - 执行Build APK操作
+**静态网站方式部署**
+1. 将构建好的H5版本文件上传至您的Web服务器
+2. 配置服务器的Web服务（如Nginx、Apache等）
+3. 配置正确的URL重写规则以支持前端路由
 
-4. **Android App Bundle打包**
-   - 在HBuilderX中选择「发行」-「原生App-云打包」
-   - 打包类型选择「Android App Bundle」
-   - 按照提示完成后续操作
+**简易部署示例（Nginx）**
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+    
+    location / {
+        root /path/to/your/dist/build/h5;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
 
-5. **注意事项**
-   - 确保APP图标和启动页符合规范
-   - 合理配置应用权限
-   - 打包前务必全面测试H5版本
-   - 打包APK前需要先配置好数字签名证书
-   - 线上发布前需将API地址切换到生产环境
+### 8. 常见问题解答
+
+1. **运行时出现依赖错误**
+   - 尝试删除 `node_modules` 目录，然后重新运行 `pnpm install`
+   
+2. **API无法连接**
+   - 检查配置文件中的API地址是否正确
+   - 确认后端服务是否已启动并可访问
+   
+3. **页面样式异常**
+   - 检查您的浏览器是否为最新版本
+   - 尝试清除浏览器缓存
+
+4. **如何更新到最新版本**
+   ```bash
+   git pull
+   pnpm install
+   ```
+
+如需更多帮助，请参考项目文档或联系项目维护者。
 
 ## 项目结构
 ```
@@ -127,17 +194,6 @@ src/
 - 预约挂号：线上预约医生
 - 健康档案：个人健康数据管理
 
-## 国内依赖镜像设置
-```bash
-# npm
-npm config set registry https://registry.npmmirror.com/
-
-# yarn
-yarn config set registry https://registry.npmmirror.com
-
-# pnpm
-pnpm config set registry https://registry.npmmirror.com
-```
 
 ## 文档
 详细文档请查看 `src/docs/` 目录：
