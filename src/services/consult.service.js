@@ -1,6 +1,6 @@
 import { request } from '../utils/request';
 import { CONFIG } from '../utils';
-import { TConsultSession, TConsultMessage, TApiResponse } from '../types/index';
+import { TConsultSession, TConsultMessage, TApiResponse } from '../types/index.d';
 
 // 问诊服务
 class ConsultService {

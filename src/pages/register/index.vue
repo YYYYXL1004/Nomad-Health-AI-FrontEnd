@@ -2,7 +2,6 @@
   <view class="register-container">
     <!-- 顶部状态栏模拟 -->
     <view class="status-bar">
-      <text>12:30</text>
       <text>📶 📊 🔋</text>
     </view>
     
@@ -14,79 +13,79 @@
     <!-- 品牌展示 -->
     <view class="brand">
       <view class="logo">
-        <text class="logo-text">A</text>
+        <image class="logo-image" src="/static/images/logo.png" mode="aspectFit"></image>
       </view>
-      <text class="app-name">App Name</text>
-      <text class="welcome-text">创建一个新账户</text>
+      <text class="app-name">敕勒云诊</text>
+      <text class="welcome-text">{{ getTextByLang('创建一个新账户', 'ᠨᠢᠭᠡ ᠰᠢᠨ᠎ᠠ ᠳᠠᠩᠰᠠ ᠨᠡᠭᠡᠭᠡᠬᠦ') }}</text>
     </view>
     
     <!-- 注册表单 -->
     <view class="register-form">
       <view class="form-item">
-        <text class="form-label">账号</text>
+        <text class="form-label">{{ getTextByLang('账号', 'ᠳᠠᠩᠰᠠ') }}</text>
         <input 
           class="form-input" 
           type="text" 
           v-model="formData.username" 
-          placeholder="请输入账号" 
+          :placeholder="getTextByLang('请输入账号', 'ᠳᠠᠩᠰᠠ ᠪᠡᠨ ᠣᠷᠣᠭᠤᠯᠤᠨ᠎ᠠ ᠤᠤ')" 
           placeholder-class="input-placeholder"
         />
       </view>
       
       <view class="form-item">
-        <text class="form-label">手机号</text>
+        <text class="form-label">{{ getTextByLang('手机号', 'ᠭᠠᠷ ᠤᠲᠠᠰᠤᠨ ᠤ ᠳᠤᠭᠠᠷ') }}</text>
         <input 
           class="form-input" 
           type="number" 
           maxlength="11"
           v-model="formData.mobile" 
-          placeholder="请输入手机号" 
+          :placeholder="getTextByLang('请输入手机号', 'ᠭᠠᠷ ᠤᠲᠠᠰᠤᠨ ᠤ ᠳᠤᠭᠠᠷ ᠢᠢᠠᠨ ᠣᠷᠣᠭᠤᠯᠤᠨ᠎ᠠ ᠤᠤ')" 
           placeholder-class="input-placeholder"
         />
       </view>
       
       <view class="form-item">
-        <text class="form-label">昵称</text>
+        <text class="form-label">{{ getTextByLang('昵称', 'ᠬᠣᠴᠣᠷᠬᠠᠢ ᠨᠡᠷ᠎ᠡ') }}</text>
         <input 
           class="form-input" 
           type="text" 
           v-model="formData.nickname" 
-          placeholder="请输入昵称(选填)" 
+          :placeholder="getTextByLang('请输入昵称(选填)', 'ᠬᠣᠴᠣᠷᠬᠠᠢ ᠨᠡᠷ᠎ᠡ ᠪᠡᠨ ᠣᠷᠣᠭᠤᠯᠤᠨ᠎ᠠ ᠤᠤ(ᠰᠣᠩᠭᠣᠵᠤ ᠪᠣᠯᠤᠨ᠎ᠠ)')" 
           placeholder-class="input-placeholder"
         />
       </view>
       
       <view class="form-item">
-        <text class="form-label">密码</text>
+        <text class="form-label">{{ getTextByLang('密码', 'ᠨᠢᠭᠤᠴᠠ ᠦᠭᠡ') }}</text>
         <input 
           class="form-input" 
           type="password" 
           v-model="formData.password" 
-          placeholder="请输入密码" 
+          :placeholder="getTextByLang('请输入密码', 'ᠨᠢᠭᠤᠴᠠ ᠦᠭᠡ ᠪᠡᠨ ᠣᠷᠣᠭᠤᠯᠤᠨ᠎ᠠ ᠤᠤ')" 
           placeholder-class="input-placeholder"
           password
         />
       </view>
       
       <view class="form-item">
-        <text class="form-label">确认密码</text>
+        <text class="form-label">{{ getTextByLang('确认密码', 'ᠨᠢᠭᠤᠴᠠ ᠦᠭᠡ ᠪᠡᠨ ᠪᠠᠲᠤᠯᠠᠬᠤ') }}</text>
         <input 
           class="form-input" 
           type="password" 
           v-model="formData.confirmPassword" 
-          placeholder="请再次输入密码" 
+          :placeholder="getTextByLang('请再次输入密码', 'ᠨᠢᠭᠤᠴᠠ ᠦᠭᠡ ᠪᠡᠨ ᠳᠠᠬᠢᠨ ᠣᠷᠣᠭᠤᠯᠤᠨ᠎ᠠ ᠤᠤ')" 
           placeholder-class="input-placeholder"
           password
         />
       </view>
       
-      <button class="register-button" @tap="handleRegister">注 册</button>
+      <button class="register-button" @tap="handleRegister">{{ getTextByLang('注 册', 'ᠪᠦᠷᠢᠳᠬᠡᠬᠦ') }}</button>
     </view>
     
     <!-- 登录链接 -->
     <view class="login-link">
-      <text>已有账号? </text>
-      <text class="link" @tap="handleLogin">立即登录</text>
+      <text>{{ getTextByLang('已有账号? ', 'ᠳᠠᠩᠰᠠ ᠪᠠᠢᠬᠤ ᠤᠤ? ') }}</text>
+      <text class="link" @tap="handleLogin">{{ getTextByLang('立即登录', 'ᠨᠡᠪᠲᠡᠷᠡᠬᠦ') }}</text>
     </view>
   </view>
 </template>
@@ -94,6 +93,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { authApi } from '@/api/index.js';
+import { getCurrentLang, setLanguage } from '@/i18n/index.js';
+
+// 当前语言
+const currentLang = ref('zh');
 
 // 表单数据
 const formData = ref({
@@ -106,6 +109,9 @@ const formData = ref({
 
 // 页面加载时检查登录状态
 onMounted(() => {
+  // 获取当前语言设置
+  currentLang.value = getCurrentLang();
+  
   // 检查是否已登录，如果已登录直接跳转到首页
   const isLoggedIn = uni.getStorageSync('isLoggedIn');
   if (isLoggedIn) {
@@ -116,12 +122,12 @@ onMounted(() => {
     return;
   }
   
-  // 自动填入测试数据方便测试
-  formData.value.username = 'newuser';
-  formData.value.password = '123456';
-  formData.value.confirmPassword = '123456';
-  formData.value.mobile = '13800138000';
-  formData.value.nickname = '新用户';
+  // 不再自动填入测试数据
+  formData.value.username = '';
+  formData.value.password = '';
+  formData.value.confirmPassword = '';
+  formData.value.mobile = '';
+  formData.value.nickname = '';
 });
 
 // 处理注册
@@ -129,7 +135,7 @@ const handleRegister = () => {
   // 验证表单
   if (!formData.value.username) {
     uni.showToast({
-      title: '请输入账号',
+      title: currentLang.value === 'zh' ? '请输入账号' : 'ᠳᠠᠩᠰᠠ ᠪᠡᠨ ᠣᠷᠣᠭᠤᠯᠤᠨ᠎ᠠ ᠤᠤ',
       icon: 'none'
     });
     return;
@@ -137,7 +143,7 @@ const handleRegister = () => {
   
   if (!formData.value.password) {
     uni.showToast({
-      title: '请输入密码',
+      title: currentLang.value === 'zh' ? '请输入密码' : 'ᠨᠢᠭᠤᠴᠠ ᠦᠭᠡ ᠪᠡᠨ ᠣᠷᠣᠭᠤᠯᠤᠨ᠎ᠠ ᠤᠤ',
       icon: 'none'
     });
     return;
@@ -145,7 +151,7 @@ const handleRegister = () => {
   
   if (formData.value.password !== formData.value.confirmPassword) {
     uni.showToast({
-      title: '两次输入的密码不一致',
+      title: currentLang.value === 'zh' ? '两次输入的密码不一致' : 'ᠨᠢᠭᠤᠴᠠ ᠦᠭᠡ ᠨᠢ ᠠᠳᠠᠯᠢᠬᠠᠨ ᠪᠢᠰᠢ ᠪᠠᠢᠨ᠎ᠠ',
       icon: 'none'
     });
     return;
@@ -153,7 +159,7 @@ const handleRegister = () => {
   
   // 显示注册中提示
   uni.showLoading({
-    title: '注册中...'
+    title: currentLang.value === 'zh' ? '注册中...' : 'ᠪᠦᠷᠢᠳᠬᠡᠵᠦ ᠪᠠᠶᠢᠨ᠎ᠠ...'
   });
   
   // 调用注册接口
@@ -170,7 +176,7 @@ const handleRegister = () => {
     // 检查响应是否包含错误码
     if (res.code && res.code !== 200) {
       uni.showToast({
-        title: res.message || '注册失败',
+        title: res.message || (currentLang.value === 'zh' ? '注册失败' : 'ᠪᠦᠷᠢᠳᠬᠡᠬᠦ ᠳᠤ ᠠᠮᠵᠢᠯᠲᠠᠥᠬᠡᠢ ᠪᠣᠯᠪᠠ'),
         icon: 'none',
         duration: 2000
       });
@@ -179,7 +185,7 @@ const handleRegister = () => {
     
     // 显示注册成功
     uni.showToast({
-      title: '注册成功',
+      title: currentLang.value === 'zh' ? '注册成功' : 'ᠠᠮᠵᠢᠯᠲᠠᠲᠠᠢ ᠪᠦᠷᠢᠳᠬᠡᠪᠡ',
       icon: 'success',
       duration: 1500
     });
@@ -196,7 +202,7 @@ const handleRegister = () => {
     
     // 显示错误信息
     uni.showToast({
-      title: err.message || '注册失败',
+      title: err.message || (currentLang.value === 'zh' ? '注册失败' : 'ᠪᠦᠷᠢᠳᠬᠡᠬᠦ ᠳᠤ ᠠᠮᠵᠢᠯᠲᠠᠥᠬᠡᠢ ᠪᠣᠯᠪᠠ'),
       icon: 'none',
       duration: 2000
     });
@@ -213,6 +219,11 @@ const handleLogin = () => {
   uni.redirectTo({
     url: '/pages/login/index'
   });
+};
+
+// 获取不同语言的文本
+const getTextByLang = (zhText, mnText) => {
+  return currentLang.value === 'zh' ? zhText : mnText;
 };
 </script>
 
@@ -263,19 +274,19 @@ const handleLogin = () => {
 .logo {
   width: 144rpx;
   height: 144rpx;
-  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+  background: transparent;
   border-radius: 36rpx;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 32rpx;
   box-shadow: 0 16rpx 32rpx rgba(37, 99, 235, 0.2);
+  overflow: hidden;
 }
 
-.logo-text {
-  color: white;
-  font-size: 72rpx;
-  font-weight: bold;
+.logo-image {
+  width: 100%;
+  height: 100%;
 }
 
 .app-name {

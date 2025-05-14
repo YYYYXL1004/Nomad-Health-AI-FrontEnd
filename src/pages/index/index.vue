@@ -23,7 +23,7 @@
     </view>
     
     <!-- 浮动登录按钮，未登录时显示 -->
-    <view class="floating-login-btn" v-if="!isUserLoggedIn" @tap="goToLogin">
+    <view class="floating-login-btn" v-if="!isUserLoggedIn && !isGuestMode" @tap="goToLogin">
       <text>{{ currentLang === 'zh' ? '登录' : 'ᠨᠡᠪᠲᠡᠷᠡᠬᠦ' }}</text>
     </view>
     
@@ -151,17 +151,25 @@ export default {
       // 健康建议
       healthAdvice: [],
       // 用户是否已登录
-      isUserLoggedIn: uni.getStorageSync('isLoggedIn')
+      isUserLoggedIn: uni.getStorageSync('isLoggedIn'),
+      // 是否是游客模式
+      isGuestMode: uni.getStorageSync('isGuestMode')
     }
   },
   // 页面生命周期
   onLoad() {
-    // 检查是否已登录
+    // 检查是否已登录或游客模式
     const isLoggedIn = uni.getStorageSync('isLoggedIn');
+    const isGuestMode = uni.getStorageSync('isGuestMode');
+    
+    // 更新状态
+    this.isUserLoggedIn = isLoggedIn;
+    this.isGuestMode = isGuestMode;
     
     // 输出登录状态调试信息
     console.log('======= 调试信息 =======');
     console.log('登录状态 isLoggedIn:', isLoggedIn);
+    console.log('游客模式 isGuestMode:', isGuestMode);
     console.log('登录状态类型:', typeof isLoggedIn);
     console.log('本地存储所有数据:', uni.getStorageInfoSync());
     console.log('========================');
@@ -175,22 +183,24 @@ export default {
       // 仍然加载一些基本数据以展示内容
       this.useDefaultArticles();
     } else {
-      console.log('用户已登录，正常加载首页');
+      console.log('用户已登录或游客模式，正常加载首页');
       // 正常加载页面数据
       this.refreshPageData();
     }
   },
   // 页面显示时执行
   onShow() {
-    // 检查是否已登录
+    // 检查是否已登录或游客模式
     const isLoggedIn = uni.getStorageSync('isLoggedIn');
-    console.log('onShow: 检查登录状态:', isLoggedIn);
+    const isGuestMode = uni.getStorageSync('isGuestMode');
+    console.log('onShow: 检查登录状态:', isLoggedIn, '游客模式:', isGuestMode);
     
-    // 更新登录状态
+    // 更新登录状态和游客模式状态
     this.isUserLoggedIn = isLoggedIn;
+    this.isGuestMode = isGuestMode;
     
     if (isLoggedIn) {
-      console.log('onShow: 用户已登录，刷新页面数据');
+      console.log('onShow: 用户已登录或使用游客模式，刷新页面数据');
       // 隐藏登录提示
       this.showLoginPopup = false;
       // 刷新页面数据
@@ -217,7 +227,17 @@ export default {
       console.log('刷新主页数据，当前语言:', this.currentLang);
       // 更新当前语言
       this.currentLang = getCurrentLang();
-      // 初始化数据
+      
+      // 检查是否是游客模式
+      const isGuestMode = uni.getStorageSync('isGuestMode');
+      if (isGuestMode) {
+        console.log('游客模式：使用默认数据，不调用API');
+        // 游客模式下使用默认数据
+        this.useDefaultArticles();
+        return;
+      }
+      
+      // 非游客模式下正常初始化数据
       this.fetchBanners();
       this.fetchArticles();
       this.fetchHealthReports();
@@ -329,6 +349,18 @@ export default {
     
     // 导航到健康服务详情页
     navigateToService(type) {
+      // 检查是否是游客模式
+      const isGuestMode = uni.getStorageSync('isGuestMode');
+      if (isGuestMode) {
+        // 游客模式下显示提示
+        uni.showToast({
+          title: this.currentLang === 'zh' ? '游客模式下无法访问此功能' : 'ᠵᠣᠴᠢᠨ ᠬᠡᠯᠪᠡᠷᠢ ᠳᠤ ᠡᠨᠡ ᠴᠢᠳᠠᠮᠵᠢ ᠶᠢ ᠬᠡᠷᠡᠭᠯᠡᠬᠦ ᠪᠣᠯᠤᠮᠵᠢᠭᠦᠢ',
+          icon: 'none',
+          duration: 2000
+        });
+        return;
+      }
+      
       if (type === 'healthReport') {
         // 健康报告直接跳转到我的健康档案
         uni.switchTab({
@@ -356,6 +388,18 @@ export default {
     
     // 导航到问诊页
     navigateToConsult() {
+      // 检查是否是游客模式
+      const isGuestMode = uni.getStorageSync('isGuestMode');
+      if (isGuestMode) {
+        // 游客模式下显示提示
+        uni.showToast({
+          title: this.currentLang === 'zh' ? '游客模式下无法访问此功能' : 'ᠵᠣᠴᠢᠨ ᠬᠡᠯᠪᠡᠷᠢ ᠳᠤ ᠡᠨᠡ ᠴᠢᠳᠠᠮᠵᠢ ᠶᠢ ᠬᠡᠷᠡᠭᠯᠡᠬᠦ ᠪᠣᠯᠤᠮᠵᠢᠭᠦᠢ',
+          icon: 'none',
+          duration: 2000
+        });
+        return;
+      }
+      
       uni.switchTab({
         url: '/pages/consult/index'
       });

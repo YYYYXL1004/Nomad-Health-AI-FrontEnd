@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": false, // 如果不想太严格，可以设为 false
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": ["@dcloudio/types"], // uni-app 官方类型声明
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.js" // 如果你的项目主要是 JS
+  ],
+  "exclude": ["node_modules", "unpackage", "dist"],
+  "vueCompilerOptions": { // uni-app Vue3 特定配置
+    "experimentalResolveStyleCssClasses": "always"
+  }
+}

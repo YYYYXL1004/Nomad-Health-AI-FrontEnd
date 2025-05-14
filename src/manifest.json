@@ -1,7 +1,7 @@
 {
-    "name" : "",
-    "appid" : "",
-    "description" : "",
+    "name" : "敕勒云诊",
+    "appid" : "__UNI__9D75306",
+    "description" : "旨在为内蒙古地区的牧民提供便捷的医疗健康服务。平台支持中蒙双语，实现了健康咨询、在线问诊、健康报告查看等核心功能。",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
@@ -41,7 +41,9 @@
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             /* SDK配置 */
             "sdkConfigs" : {}
         }
@@ -65,8 +67,8 @@
     "mp-toutiao" : {
         "usingComponents" : true
     },
-    "uniStatistics": {  
-        "enable": false
+    "uniStatistics" : {
+        "enable" : false
     },
     "vueVersion" : "3"
 }

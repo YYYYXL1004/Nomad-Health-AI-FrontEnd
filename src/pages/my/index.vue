@@ -12,13 +12,16 @@
         <text class="user-name">{{ userInfo.username || '游客' }}</text>
         <text class="user-id">ID: {{ userInfo.userId || '--' }}</text>
       </view>
-      <view class="edit-btn" @tap="editProfile">
+      <view class="edit-btn" @tap="editProfile" v-if="!isGuestMode">
         <text>{{ $t('my.editProfile') }}</text>
+      </view>
+      <view class="guest-tag" v-else>
+        <text>{{ $t('my.guest') }}</text>
       </view>
     </view>
     
     <!-- 详细信息展示区 -->
-    <view v-if="showDetailInfo" class="detail-info-section">
+    <view v-if="showDetailInfo && !isGuestMode" class="detail-info-section">
       <view class="detail-item" v-if="userInfo.phone">
         <text class="detail-label">{{ $t('my.phoneLabel') }}</text>
         <text class="detail-value">{{ userInfo.phone }}</text>
@@ -54,11 +57,11 @@
         <text class="detail-label">{{ $t('my.registerTimeLabel') }}</text>
         <text class="detail-value">{{ userInfo.created_at }}</text>
       </view>
-      <view class="detail-toggle" @tap="showDetailInfo = false">
+      <view class="detail-toggle" @tap="toggleDetailInfo(false)">
         <text>{{ $t('my.collapseInfo') }}</text>
       </view>
     </view>
-    <view v-else class="detail-toggle" @tap="showDetailInfo = true">
+    <view v-else-if="!isGuestMode" class="detail-toggle" @tap="toggleDetailInfo(true)">
       <text>{{ $t('my.viewMoreInfo') }}</text>
     </view>
     
@@ -155,6 +158,9 @@ const userInfo = ref({
   created_at: ''
 });
 
+// 是否是游客模式
+const isGuestMode = ref(uni.getStorageSync('isGuestMode') || false);
+
 // 详细信息展示控制
 const showDetailInfo = ref(false);
 
@@ -192,6 +198,22 @@ const fetchUserInfo = () => {
       // 如果不是http链接或绝对路径，则修正格式
       userInfo.value.avatar = '/src/static/images/default-avatar.jpg';
     }
+  }
+  
+  // 检查是否是游客模式
+  const isGuestMode = uni.getStorageSync('isGuestMode');
+  if (isGuestMode) {
+    console.log('检测到游客模式，跳过API调用');
+    
+    // 使用游客信息，确保用户名显示为"游客"
+    userInfo.value = {
+      ...userInfo.value,
+      userId: 'guest',
+      username: currentLang.value === 'zh' ? '游客' : 'ᠵᠣᠴᠢᠨ',
+      nickname: currentLang.value === 'zh' ? '游客' : 'ᠵᠣᠴᠢᠨ',
+      avatar: '/static/images/guest-avatar.png'
+    };
+    return;
   }
   
   // 调用API获取完整用户信息
@@ -268,8 +290,16 @@ const editProfile = () => {
 
 // 退出登录
 const logout = () => {
+  // 检查是否是游客模式
+  const isGuestMode = uni.getStorageSync('isGuestMode');
+  
   // 提示文本
-  const logoutConfirmText = currentLang.value === 'zh' ? '确定要退出登录吗？' : 'Та системээс гарахдаа итгэлтэй байна уу?';
+  let logoutConfirmText = '';
+  if (isGuestMode) {
+    logoutConfirmText = currentLang.value === 'zh' ? '确定要退出游客模式吗？' : 'ᠵᠣᠴᠢᠨ ᠬᠡᠯᠪᠡᠷᠢ ᠡᠴᠡ ᠭᠠᠷᠬᠤ ᠳᠠᠭᠠᠨ ᠢᠲᠡᠭᠡᠯᠲᠡᠢ ᠪᠠᠶᠢᠨ᠎ᠠ ᠤᠤ?';
+  } else {
+    logoutConfirmText = currentLang.value === 'zh' ? '确定要退出登录吗？' : 'Та системээс гарахдаа итгэлтэй байна уу?';
+  }
   
   uni.showModal({
     title: currentLang.value === 'zh' ? '提示' : 'Анхааруулга',
@@ -277,21 +307,31 @@ const logout = () => {
     success: (res) => {
       if (res.confirm) {
         // 显示加载中
+        const loadingText = isGuestMode ? 
+          (currentLang.value === 'zh' ? '退出中...' : 'ᠭᠠᠷᠴᠤ ᠪᠠᠶᠢᠨ᠎ᠠ...') :
+          (currentLang.value === 'zh' ? '退出中...' : 'Гарч байна...');
+          
         uni.showLoading({
-          title: currentLang.value === 'zh' ? '退出中...' : 'Гарч байна...'
+          title: loadingText
         });
         
-        // 调用登出API
-        authApi.logout().then((res) => {
-          console.log('退出登录成功:', res);
+        if (isGuestMode) {
+          // 游客模式直接处理退出
           uni.hideLoading();
           handleLogoutSuccess();
-        }).catch(err => {
-          console.error('退出登录失败:', err);
-          uni.hideLoading();
-          // 即使API失败，也强制清除本地存储并跳转
-          handleLogoutSuccess();
-        });
+        } else {
+          // 正常用户调用登出API
+          authApi.logout().then((res) => {
+            console.log('退出登录成功:', res);
+            uni.hideLoading();
+            handleLogoutSuccess();
+          }).catch(err => {
+            console.error('退出登录失败:', err);
+            uni.hideLoading();
+            // 即使API失败，也强制清除本地存储并跳转
+            handleLogoutSuccess();
+          });
+        }
       }
     }
   });
@@ -304,6 +344,7 @@ const handleLogoutSuccess = () => {
   uni.removeStorageSync('userId');
   uni.removeStorageSync('userInfo');
   uni.removeStorageSync('isLoggedIn');
+  uni.removeStorageSync('isGuestMode');
           
   // 显示提示
   const logoutSuccessText = currentLang.value === 'zh' ? '退出登录成功' : 'Системээс амжилттай гарлаа';
@@ -321,6 +362,21 @@ const handleLogoutSuccess = () => {
       url: '/pages/login/index'
     });
   }, 1500);
+};
+
+// 切换详情显示状态
+const toggleDetailInfo = (show) => {
+  console.log('切换详情显示状态，当前语言:', currentLang.value, '显示详情:', show);
+  
+  // 确保当前语言设置正确
+  const savedLang = getCurrentLang();
+  if (currentLang.value !== savedLang) {
+    console.log('语言不一致，更新当前语言从', currentLang.value, '到', savedLang);
+    currentLang.value = savedLang;
+  }
+  
+  // 设置详情显示状态
+  showDetailInfo.value = show;
 };
 </script>
 
@@ -380,6 +436,17 @@ const handleLogoutSuccess = () => {
 }
 
 .edit-btn text {
+  font-size: 24rpx;
+  color: #fff;
+}
+
+.guest-tag {
+  padding: 12rpx 24rpx;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 30rpx;
+}
+
+.guest-tag text {
   font-size: 24rpx;
   color: #fff;
 }

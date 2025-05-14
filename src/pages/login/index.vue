@@ -5,7 +5,9 @@
     </view>
     
     <view class="logo-container">
-      <view class="logo"></view>
+      <view class="logo">
+        <image class="logo-image" src="/static/images/logo.png" mode="aspectFit"></image>
+      </view>
       <text class="app-name">{{ $t('auth.login') }}</text>
     </view>
     
@@ -40,6 +42,10 @@
       </view>
       
       <button class="login-btn" @tap="handleLogin">{{ $t('auth.loginNow') }}</button>
+      
+      <view class="guest-login" @tap="handleGuestLogin">
+        <text>{{ $t('auth.guestLogin') }}</text>
+      </view>
       
       <view class="register-link" @tap="goToRegister">
         <text>{{ $t('auth.noAccount') }}</text>
@@ -107,9 +113,9 @@ onMounted(() => {
     return;
   }
   
-  // 自动填入测试账号方便测试
-  account.value = 'test';
-  password.value = '123456';
+  // 不再自动填入测试账号
+  account.value = '';
+  password.value = '';
 });
 
 // 显示语言选择器
@@ -213,11 +219,47 @@ const handleLogin = () => {
       
       // 显示错误信息
       uni.showToast({
-        title: err.message || (currentLang.value === 'zh' ? '登录失败，请检查账号密码' : 'Нэвтрэх амжилтгүй болсон'),
+        title: err.message || (currentLang.value === 'zh' ? '登录失败，请检查账号密码' : 'ᠲᠡᠮᠳᠡᠭᠯᠡᠬᠦ ᠢᠯᠠᠭᠳᠠᠪᠠ ᠂ ᠳᠠᠩᠰᠠᠨ ᠨᠣᠮᠧᠷ᠎ᠦ᠋ᠨ ᠨᠢᠭᠤᠴᠠ ᠨᠣᠮᠧᠷ᠎ᠢ᠋ ᠪᠠᠢᠴᠠᠭ᠎ᠠ'),
         icon: 'none',
         duration: 2000
       });
     });
+};
+
+// 游客登录处理
+const handleGuestLogin = () => {
+  console.log('游客登录流程开始');
+  
+  // 显示登录中提示
+  uni.showLoading({
+    title: currentLang.value === 'zh' ? '正在进入...' : 'ᠨᠡᠪᠲᠡᠷᠡᠵᠦ ᠪᠠᠶᠢᠨ᠎ᠠ...'
+  });
+  
+  // 设置游客标识和基本信息
+  uni.setStorageSync('isLoggedIn', true);
+  uni.setStorageSync('isGuestMode', true);
+  uni.setStorageSync('userInfo', {
+    userId: 'guest',
+    nickname: currentLang.value === 'zh' ? '游客' : 'ᠵᠣᠴᠢᠨ',
+    avatar: '/static/images/guest-avatar.png'
+  });
+  
+  // 显示提示
+  setTimeout(() => {
+    uni.hideLoading();
+    uni.showToast({
+      title: currentLang.value === 'zh' ? '游客模式已启用' : 'ᠵᠣᠴᠢᠨ ᠬᠡᠯᠪᠡᠷᠢ ᠠᠵᠢᠯᠯᠠᠭᠤᠯᠤᠭᠰᠠᠨ',
+      icon: 'success',
+      duration: 1500
+    });
+    
+    // 延迟跳转，等待提示显示完毕
+    setTimeout(() => {
+      uni.switchTab({
+        url: '/pages/index/index'
+      });
+    }, 1500);
+  }, 1000);
 };
 
 // 跳转到注册页面
@@ -274,10 +316,19 @@ const goToForgotPassword = () => {
 .logo {
   width: 180rpx;
   height: 180rpx;
-  background-color: #8ab6c8;
+  background-color: transparent;
   border-radius: 90rpx;
   margin-bottom: 30rpx;
   box-shadow: 0 8rpx 16rpx rgba(138, 182, 200, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.logo-image {
+  width: 100%;
+  height: 100%;
 }
 
 .app-name {
@@ -347,6 +398,23 @@ const goToForgotPassword = () => {
   align-items: center;
   box-shadow: 0 8rpx 16rpx rgba(138, 182, 200, 0.3);
   border: none;
+}
+
+.guest-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.guest-login text {
+  font-size: 28rpx;
+  color: #8ab6c8;
+  padding: 12rpx 40rpx;
+  border: 1px solid #8ab6c8;
+  border-radius: 45rpx;
+  background-color: rgba(138, 182, 200, 0.1);
+  box-shadow: 0 2rpx 8rpx rgba(138, 182, 200, 0.2);
 }
 
 .register-link {

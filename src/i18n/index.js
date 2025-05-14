@@ -41,7 +41,8 @@ const messages = {
       registerSuccess: '注册成功',
       logout: '退出登录',
       logoutConfirm: '确定要退出登录吗？',
-      logoutSuccess: '已退出登录'
+      logoutSuccess: '已退出登录',
+      guestLogin: '游客登录'
     },
     // 主页
     home: {
@@ -271,7 +272,8 @@ const messages = {
       registerSuccess: 'ᠠᠮᠵᠢᠯᠲᠠᠲᠠᠢ ᠪᠦᠷᠢᠳᠬᠡᠭᠳᠡᠯᠡᠭᠡ',
       logout: 'ᠭᠠᠷᠬᠤ',
       logoutConfirm: 'ᠲᠠ ᠭᠠᠷᠬᠤᠳᠠᠭᠠᠨ ᠢᠲᠡᠭᠡᠯᠲᠡᠢ ᠪᠠᠶᠢᠨ᠎ᠠ ᠤᠤ?',
-      logoutSuccess: 'ᠭᠠᠷᠰᠠᠨ'
+      logoutSuccess: 'ᠭᠠᠷᠰᠠᠨ',
+      guestLogin: 'ᠵᠣᠴᠢᠨ ᠨᠡᠪᠲᠡᠷᠡᠬᠦ'
     },
     // 主页
     home: {
